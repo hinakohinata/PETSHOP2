@@ -3,41 +3,157 @@
 <head>
 <meta charset="utf-8">
 <title>PET SHOP - Pet Shop Website Template</title>
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+<base th:href="@{/}">
+<!-- Favicon -->
+<link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap" rel="stylesheet">  
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap"
+	rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+<!-- Icon Font Stylesheet -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<!-- Libraries Stylesheet -->
+<link href="lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+<!-- Template Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
-	
+
 	<div th:include="./component/_topbar.html"></div>
 	<div th:include="./component/_navbar.html"></div>
-	<div th:include="./component/_products.html"></div>
-	<div th:include="./component/_offer.html"></div>
-	<div th:include="./component/_pricingPlan.html"></div>
-	<div th:include="./component/_footer.html"></div>
-	<div th:include="./component/_back_lib.html"></div>
+	<!-- <div th:include="./component/_products.html"></div> -->
+
+
+
+	<!-- Products Start -->
+	<div class="container-fluid py-5">
+		<div class="container ">
+
+			<div class="border-start border-5 border-primary ps-5 mb-5"
+				style="max-width: 600px;">
+				<h6 class="text-primary text-uppercase">Products</h6>
+				<h1 class="display-5 text-uppercase mb-0">Products For Your
+					Best Friends</h1>
+			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-7">
+					<form th:action="@{products/search}" method="get"
+						class="input-group mb-3">
+
+						<input type="text" id="keyword" name="keyword"
+							placeholder="Enter keyword..." class="form-control "
+							aria-describedby="button-addon2" />
+						<button class="btn btn-primary " type="submit">Search</button>
+					</form>
+				</div>
+				<div class="col-3">
+					<form th:action="@{products/sort}" method="get"
+						class="input-group mb-3">
+						<select name="sort">
+							<option value="name">Name</option>
+							<option value="price"> Price</option>
+						</select>
+						<button class="btn btn-primary " type="submit">Sort</button>
+					</form>
+				</div>
+			</div>
+			<div th:switch="${valueP}">
+				<div th:case=false>
+					<div class="row">
+						<div class="d-flex flex-wrap justify-content-center">
+
+							<div class="pb-5 d-flex" th:each="item : ${page.content}">
+								<div
+									class="card product-item position-relative bg-light d-flex flex-column text-center">
+									<img class="img-fluid mb-4"
+										th:src="@{/image/__${item.imageUrl}__}"
+										th:alt="${item.imageUrl}">
+									<h6 class="text-uppercase" th:text="${item.name}"></h6>
+									<h5 class="text-primary mb-0" th:text="${item.price}+' $'"></h5>
+									<div class="btn-action d-flex justify-content-center">
+										<a class="btn btn-primary py-2 px-3"
+											th:href="@{add-to-cart/{id}(id=${item.id})}"><i
+											class="bi bi-cart"></i></a> <a class="btn btn-primary py-2 px-3"
+											th:href="@{/prod_detal/{id}(id=${item.id})}"><i
+											class="bi bi-eye"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<nav aria-label="Page navigation example text-center">
+						<ul class="pagination d-flex justify-content-center">
+							<li class="page-item"><a class="page-link"
+								th:href="@{/product.html(p=0)}">First</a></li>
+							<li class="page-item"><span th:switch="${page.number}">
+									<a th:case="0" th:href="@{/product.html(p=${page.number})}"
+									class="page-link">Previous</a> <a th:case="*"
+									th:href="@{/product.html(p=${page.number-1})}"
+									class="page-link">Previous</a>
+
+							</span></li>
+							<th:block th:each="i: ${#numbers.sequence(0, page.totalPages-1)}">
+								<li class="page-item"><a class="page-link"
+									th:href="@{/product.html(p=${i})}"><span th:text="${i+1}"></span></a></li>
+							</th:block>
+
+
+							<li class="page-item"><span th:switch="${page.number}">
+									<a th:case="${page.totalPages-1}"
+									th:href="@{/product.html(p=${page.number})}" class="page-link">Next</a>
+									<a th:case="*" th:href="@{/product.html(p=${page.number+1})}"
+									class="page-link">Next</a>
+
+							</span></li>
+							<li class="page-item"><a class="page-link"
+								th:href="@{/product.html(p=${page.totalPages-1})}">Last</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div th:case=true>
+				<div class="d-flex flex-wrap justify-content-center">
+
+							<div class="pb-5 d-flex" th:each="item : ${products}">
+								<div
+									class="card product-item position-relative bg-light d-flex flex-column text-center">
+									<img class="img-fluid mb-4"
+										th:src="@{/image/__${item.imageUrl}__}"
+										th:alt="${item.imageUrl}">
+									<h6 class="text-uppercase" th:text="${item.name}"></h6>
+									<h5 class="text-primary mb-0" th:text="${item.price}+' $'"></h5>
+									<div class="btn-action d-flex justify-content-center">
+										<a class="btn btn-primary py-2 px-3"
+											th:href="@{add-to-cart/{id}(id=${item.id})}"><i
+											class="bi bi-cart"></i></a> <a class="btn btn-primary py-2 px-3"
+											th:href="@{/prod_detal/{id}(id=${item.id})}"><i
+											class="bi bi-eye"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Products End -->
 
 
 
@@ -47,5 +163,10 @@
 
 
 
+
+		<div th:include="./component/_offer.html"></div>
+		<div th:include="./component/_pricingPlan.html"></div>
+		<div th:include="./component/_footer.html"></div>
+		<div th:include="./component/_back_lib.html"></div>
 </body>
 </html>

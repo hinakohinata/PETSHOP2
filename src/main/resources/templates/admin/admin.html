@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:form="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>ADMIN - PET SHOP - Pet Shop Website</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+<base th:href="@{/admin/}">
+<!-- Favicon -->
+<link th:href="@{img/favicon.ico}" rel="icon">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap"
+	rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link th:href="@{lib/flaticon/font/flaticon.css}" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
+<style>
+.anyClass {
+	height: 550px;
+	overflow-y: scroll;
+}
+</style>
+</head>
+
+<body>
+
+
+
+	<!-- Navbar Start -->
+	<nav
+		class="navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0">
+		<a href="index.html" class="navbar-brand ms-lg-5">
+			<h1 class="m-0 text-uppercase text-dark">
+				<i class="bi bi-shop fs-1 text-primary me-3"></i>Pet Shop
+			</h1>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+			data-bs-target="#navbarCollapse">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<div class="navbar-nav ms-auto py-0">
+				<a href="index.html" class="nav-item nav-link">Username</a>
+				<!-- <div class="nav-item dropdown">
+					<a href="#" class="nav-link dropdown-toggle"
+						data-bs-toggle="dropdown">Pages</a>
+					<div class="dropdown-menu m-0">
+						<a href="price.html" class="dropdown-item">Pricing Plan</a> <a
+							href="team.html" class="dropdown-item">The Team</a> <a
+							href="testimonial.html" class="dropdown-item">Testimonial</a> <a
+							href="blog.html" class="dropdown-item">Blog Grid</a> <a
+							href="detail.html" class="dropdown-item">Blog Detail</a>
+					</div>
+				</div> -->
+				<a href="contact.html"><a href="index.html"
+					class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Log
+						out<i class="bi bi-arrow-right"></i>
+				</a> </a>
+			</div>
+		</div>
+	</nav>
+	<!-- Navbar End -->
+
+
+	<div class="container-fluid bg-white">
+		<div class="row">
+			<div class="col-sm-2 bg-light">
+				<h5
+					class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Quick
+					Links</h5>
+				<div class="d-flex flex-column justify-content-start text-left">
+					<a class="text-body mb-2" th:href="@{/admin/adminAcc}"><i
+						class="bi bi-arrow-right text-primary me-2"></i><b>Account</b></a> <a
+						class="text-body mb-2" th:href="@{/admin/adminCate}"><i
+						class="bi bi-arrow-right text-primary me-2"></i>Category</a> <a
+						class="text-body mb-2" th:href="@{/admin/adminOrder}"><i
+						class="bi bi-arrow-right text-primary me-2"></i>Order</a> <a
+						class="text-body mb-2" th:href="@{/admin/adminProd}"><i
+						class="bi bi-arrow-right text-primary me-2"></i>Product</a> <a
+						class="text-body mb-2" th:href="@{/admin/adminAcc}"><i
+						class=" bi bi-arrow-right text-primary me-2"></i>Proceeds</a> <a
+						class="text-body" th:href="@{/admin/adminContact}"><i
+						class=" bi bi-arrow-right text-primary me-2"></i>Contact</a>
+				</div>
+
+
+			</div>
+			<div class="col-sm-7 text-left">
+				<h1>Account</h1>
+				<p class="text-danger" th:text="${message}"></p>
+				<div class="anyClass ">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Username</th>
+								<th>Password</th>
+								<th>Email</th>
+								<th>Role</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="account1 : ${accounts}">
+								<td th:text="${account1.id}"></td>
+								<td th:text="${account1.username}"></td>
+								<td th:text="${account1.password}"></td>
+								<td th:text="${account1.email}"></td>
+								<td th:text="${account1.role}"></td>
+								<td><a class="text-dangerr"
+									th:href="@{adminAcc/{id}(id=${account1.id})}">Update</a>|<a
+									class="text-danger"
+									th:href="@{adminAcc/delete/{id}(id=${account1.id})}">Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-3 ">
+				<div th:switch="${up}">
+					<div th:case=true>
+						<h1>Update</h1>
+						<div class="form">
+							<form th:action="@{adminAcc/update}" method="post"
+								th:object="${account}">
+								<label class="form-label" for="username">id:</label> <input
+									class="form-control" type="text" id="id" th:field="*{id}"
+									disabled> <label class="form-label" for="username">Username:</label>
+								<input class="form-control" type="text" id="username"
+									th:field="*{username}" required> <label
+									class="form-label" for="password">Password:</label> <input
+									class="form-control" type="text" id="password"
+									th:field="*{password}" required> <label
+									class="form-label" for="email">Email:</label> <input
+									class="form-control" type="email" id="email"
+									th:field="*{email}" required> <label class="form-label"
+									for="role">Role:</label> <input class="form-control"
+									type="text" id="role" th:field="*{role}" required>
+								<hr />
+
+								<button class="btn btn-primary form-label" type="submit">Update</button>
+							</form>
+						</div>
+
+
+
+					</div>
+					<div th:case=false>
+						<h1>Create</h1>
+						<div class="form">
+							<form th:action="@{/admin/accounts/create}" method="post"
+								th:object="${account}">
+								<label class="form-label" for="username">Username:</label> <input
+									class="form-control" type="text" id="username"
+									th:field="*{username}" required> <label
+									class="form-label" for="password">Password:</label> <input
+									class="form-control" type="text" id="password"
+									th:field="*{password}" required> <label
+									class="form-label" for="email">Email:</label> <input
+									class="form-control" type="email" id="email"
+									th:field="*{email}" required> <label class="form-label"
+									for="role">Role:</label> <input class="form-control"
+									type="text" id="role" th:field="*{role}" required>
+								<hr />
+
+								<button class="btn btn-primary form-label" type="submit">Create</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- JavaScript Libraries -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="lib/easing/easing.min.js"></script>
+	<script src="lib/waypoints/waypoints.min.js"></script>
+	<script src="./lib/owlcarousel/owl.carousel.min.js"></script>
+
+	<!-- Template Javascript -->
+	<script src="js/main.js"></script>
+
+
+
+
+</body>
+</html>
